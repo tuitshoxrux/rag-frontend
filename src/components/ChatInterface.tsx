@@ -58,16 +58,7 @@ export const ChatInterface: React.FC = () => {
     }
   };
 
-  // Sample questions
-  const sampleQuestions = [
-    "What is this document about?",
-    "Summarize the main points",
-    "What are the key findings?",
-  ];
-
-  const handleSampleQuestion = (q: string) => {
-    setQuestion(q);
-  };
+  
 
   return (
     <div className="max-w-5xl mx-auto">
