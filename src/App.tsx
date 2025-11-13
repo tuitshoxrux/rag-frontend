@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import  { useState } from 'react';
 import { FileUpload } from './components/FileUpload';
 import { ChatInterface } from './components/ChatInterface';
-import { BookOpen, Upload as UploadIcon, MessageSquare } from 'lucide-react';
+import {  Upload as UploadIcon, MessageSquare } from 'lucide-react';
 
 function App() {
   const [activeTab, setActiveTab] = useState<'upload' | 'chat'>('upload');
