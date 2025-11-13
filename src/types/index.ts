@@ -48,3 +48,9 @@ export interface Message {
   sources?: Source[];
   timestamp: Date;
 }
+
+// Auth Types
+export interface User {
+  username: string;
+  email?: string;
+}

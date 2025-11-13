@@ -1,9 +1,12 @@
 import  { useState } from 'react';
 import { FileUpload } from './components/FileUpload';
 import { ChatInterface } from './components/ChatInterface';
-import {  Upload as UploadIcon, MessageSquare } from 'lucide-react';
+import { Login } from './components/Login';
+import { useAuth } from './hooks/useAuth';
+import { BookOpen, Upload as UploadIcon, MessageSquare, LogOut } from 'lucide-react';
 
 function App() {
+  const { user, isAuthenticated, loading, login, logout } = useAuth();
   const [activeTab, setActiveTab] = useState<'upload' | 'chat'>('upload');
   const [hasUploadedDocs, setHasUploadedDocs] = useState(false);
 
@@ -12,17 +15,52 @@ function App() {
     setActiveTab('chat');
   };
 
+  // Show loading state
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
+          <p className="mt-4 text-gray-600">Loading...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Show login if not authenticated
+  if (!isAuthenticated) {
+    return <Login onLogin={login} />;
+  }
+
+  // Main App (after login)
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
       {/* Header */}
       <header className="bg-white shadow-sm">
         <div className="max-w-7xl mx-auto px-4 py-6">
-          <div className="flex items-center gap-3">
-            {/* <BookOpen className="w-8 h-8 text-blue-600" /> */}
-            <img src="logo.png" alt="CBU logo" className='w-20 h-20'/>
-            <div>
-              <h1 className="text-2xl font-bold text-gray-900">Markaziy bank</h1>
-              <p className="text-sm text-gray-600">Local Copilot</p>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <BookOpen className="w-8 h-8 text-blue-600" />
+              <div>
+                <h1 className="text-2xl font-bold text-gray-900">RAG Word Service</h1>
+                <p className="text-sm text-gray-600">Upload documents and ask questions</p>
+              </div>
+            </div>
+
+            {/* User Info & Logout */}
+            <div className="flex items-center gap-4">
+              <div className="text-right">
+                <p className="text-sm font-medium text-gray-700">{user?.username}</p>
+                <p className="text-xs text-gray-500">Logged in</p>
+              </div>
+              <button
+                onClick={logout}
+                className="flex items-center gap-2 px-4 py-2 text-gray-700 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                title="Logout"
+              >
+                <LogOut className="w-5 h-5" />
+                <span className="hidden sm:inline">Logout</span>
+              </button>
             </div>
           </div>
         </div>
@@ -68,7 +106,7 @@ function App() {
 
       {/* Footer */}
       <footer className="mt-auto py-6 text-center text-gray-600 text-sm">
-        <p>Markaziy bank Local Copilot v1.0.0</p>
+        <p>RAG Word Service v1.0.0 • Powered by OpenAI & Qdrant</p>
       </footer>
     </div>
   );
